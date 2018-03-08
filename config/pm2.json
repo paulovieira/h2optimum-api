@@ -1,0 +1,14 @@
+{
+  "name": "agrobrain-cloud-server",
+  "script": "./index.js",
+  "args": [
+    "--production"
+  ],
+  "env": {
+  },
+  "max_memory_restart" : "400M",
+  "treekill": true,
+  "restart_delay": 5000,
+  "out_file": "/dev/null"
+}
+
