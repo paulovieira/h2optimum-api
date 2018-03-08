@@ -1,5 +1,5 @@
 {
-  "name": "agrobrain-cloud-server",
+  "name": "h2optimum-api",
   "script": "./index.js",
   "args": [
     "--production"
