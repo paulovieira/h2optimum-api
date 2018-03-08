@@ -18,10 +18,6 @@ internals.measurementSchema = Joi.object({
 
 exports.register = function (server, options, next){
 
-    // insert measurements into a test table
-
-    // http://localhost:8000/v1/readings?mac=08:00:2b:01:02:03&data[0][sid]=1&data[0][value]=20.1&data[0][type]=t&data[0][desc]=&data[1][sid]=2&data[1][value]=300&data[1][type]=b&data[1][desc]=
-
     server.route({
         path: '/v1/readings',
         method: 'GET',

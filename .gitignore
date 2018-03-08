@@ -19,3 +19,4 @@ config/production.js
 database/__*
 logs
 **/_build/*
+secrets*
