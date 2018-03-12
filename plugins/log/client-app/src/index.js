@@ -8,7 +8,7 @@ let JsonMarkup = require('json-markup');
 
 let internals = {
 	format: 'raw',
-	period: 500, // 12
+	period: 12,
 	response: []
 
 }
