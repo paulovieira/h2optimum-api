@@ -85,6 +85,48 @@ exports.register = function (server, options, next){
         }
     });
 
+    // fetch readings from the last N hours 
+
+    server.route({
+        path: '/v1/get-readings',
+        method: 'GET',
+        config: {
+
+            validate: {
+
+                query: {
+                    period: Joi.number(),
+                },
+
+                options: {
+                    stripUnknown: true
+                }
+            }
+
+        },
+
+        handler: function (request, reply) {
+
+            //console.log(request.query);
+
+            const query = `
+                select * from read_measurements(' ${ JSON.stringify(request.query) } ');
+            `;
+            console.log(query);
+
+            Db.query(query)
+                .then(function (result){
+
+                    return reply(result);
+                })
+                .catch(function (err){
+
+                    Utils.logErr(err, ['api-measurements']);
+                    return reply(err);
+                });
+        }
+    });
+
     return next();
 };
 

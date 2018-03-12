@@ -20,3 +20,4 @@ database/__*
 logs
 **/_build/*
 secrets*
+plugins/**/dist

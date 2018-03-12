@@ -64,6 +64,9 @@ const manifest = {
     //        },
 
 
+            // https://github.com/hapijs/good/tree/v7.3.0
+            // https://github.com/hapijs/good-console/tree/v6.4.1
+            // https://github.com/hapijs/good-squeeze/tree/v5.0.2
             {
                 plugin: {
                     register: 'good',
@@ -72,6 +75,7 @@ const manifest = {
                 options: {}
             },
 
+            // https://github.com/danielb2/blipp/tree/v2.3.0
             {
                 plugin: {
                     register: 'blipp',
@@ -79,7 +83,8 @@ const manifest = {
                 },
                 options: {}
             },
-/*
+
+            // https://github.com/hapijs/inert/tree/v4.2.1
             {
                 plugin: {
                     register: 'inert',
@@ -88,6 +93,7 @@ const manifest = {
                 options: {}
             },
 
+            // https://github.com/hapijs/vision/tree/v4.1.1
             {
                 plugin: {
                     register: 'vision',
@@ -95,7 +101,9 @@ const manifest = {
                 },
                 options: {}
             },
-*/
+
+
+            // https://github.com/dafortune/hapi-qs/tree/v1.1.3
             {
                 plugin: {
                     register: 'hapi-qs',
@@ -149,7 +157,14 @@ const manifest = {
 */
             {
                 plugin: {
-                    register: './plugins/api-readings/api-readings.js',
+                    register: './plugins/readings/readings.js',
+                    options: {}
+                },
+                options: {}
+            },
+            {
+                plugin: {
+                    register: './plugins/log/log.js',
                     options: {}
                 },
                 options: {}
