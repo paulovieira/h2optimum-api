@@ -45,7 +45,10 @@ function fetchData() {
 
 		internals.response = responses[1];
 		for (let i = 0; i < internals.response.length; i++) {
-			internals.response[i].ts = Fecha.format(new Date(internals.response[i].ts), 'dddd, DD-MMM HH:mm:ss')
+			let d = new Date(internals.response[i].ts);
+			internals.response[i].timestamp = d.getTime();
+			internals.response[i].time = Fecha.format(d, 'dddd, DD-MMM HH:mm:ss')
+			delete internals.response[i].ts;
 		}
 
 		updateDisplay()
@@ -90,9 +93,11 @@ function showTable() {
 	     data: internals.response,
 	     pageLength: 500,
 	     lengthChange: false,
+	     order: [[ 0, 'desc' ]],
 	     columns: [
 	     	//{ data: "id" , title: "id" },
-	        { data: "ts" , title: "ts" },
+	     	{ data: "timestamp" , title: "timestamp", visible: false, searchable: false },
+	        { data: "time" , title: "time" },
 	        { data: "device_id" , title: "device_id" },
 	        { data: "sid" , title: "sid" },
 	        { data: "type" , title: "type" },
