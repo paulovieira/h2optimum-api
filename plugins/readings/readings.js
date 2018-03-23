@@ -75,7 +75,16 @@ exports.register = function (server, options, next){
             Db.query(query)
                 .then(function (result){
 
-                    return reply({ newRecords: result.length, ts: new Date().toISOString() });
+                    // TODO: change response body if request was not authenticatd
+                    //return reply({ newRecords: result.length, ts: new Date().toISOString() });
+
+                    let remoteAction = 'none';
+                    let responsePayload = `newRecords: ${ result.length }; remoteAction: ${ remoteAction }`;
+
+                    return reply(responsePayload)
+                            .type('text/plain')
+                            .header('x-new-records', result.length)
+                            .header('x-remote-action', remoteAction);
                 })
                 .catch(function (err){
 
