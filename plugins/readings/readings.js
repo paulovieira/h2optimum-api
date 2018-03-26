@@ -110,6 +110,10 @@ exports.register = function (server, options, next){
                 options: {
                     stripUnknown: true
                 }
+            },
+
+            cors: {
+                origin: ['http://localhost:8001', 'http://app.2adapt.pt']
             }
 
         },

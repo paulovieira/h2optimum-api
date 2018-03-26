@@ -55,153 +55,90 @@ const manifest = {
 
     registrations: [
 
-    //        {
-    //            plugin: {
-    //                register: "...",
-    //                options: Config.get('plugins:...')
-    //            },
-    //            options: {}
-    //        },
+        // https://github.com/USER/REPOSITORY/tree/vX.Y.Z
+        // dependencies: ['...']
+        // {
+        //     plugin: {
+        //         register: '...',
+        //         options: Config.get('plugins:...')
+        //     },
+        //     options: {}
+        // },
 
 
-            // https://github.com/hapijs/good/tree/v7.3.0
-            // https://github.com/hapijs/good-console/tree/v6.4.1
-            // https://github.com/hapijs/good-squeeze/tree/v5.0.2
-            {
-                plugin: {
-                    register: 'good',
-                    options: Config.get('plugins:good')
-                },
+
+        // https://github.com/hapijs/good/tree/v7.3.0
+        // https://github.com/hapijs/good-console/tree/v6.4.1
+        // https://github.com/hapijs/good-squeeze/tree/v5.0.2
+        {
+            plugin: {
+                register: 'good',
+                options: Config.get('plugins:good')
+            },
+            options: {}
+        },
+
+
+        // https://github.com/danielb2/blipp/tree/v2.3.0
+        {
+            plugin: {
+                register: 'blipp',
+                options: Config.get('plugins:blipp')
+            },
+            options: {}
+        },
+
+
+        // https://github.com/hapijs/inert/tree/v4.2.1
+        {
+            plugin: {
+                register: 'inert',
                 options: {}
             },
+            options: {}
+        },
 
-            // https://github.com/danielb2/blipp/tree/v2.3.0
-            {
-                plugin: {
-                    register: 'blipp',
-                    options: Config.get('plugins:blipp')
-                },
+
+        // https://github.com/hapijs/vision/tree/v4.1.1
+        {
+            plugin: {
+                register: 'vision',
                 options: {}
             },
+            options: {}
+        },
 
-            // https://github.com/hapijs/inert/tree/v4.2.1
-            {
-                plugin: {
-                    register: 'inert',
-                    options: {}
-                },
+
+        // https://github.com/dafortune/hapi-qs/tree/v1.1.3
+        {
+            plugin: {
+                register: 'hapi-qs',
                 options: {}
             },
+            options: {}
+        },
 
-            // https://github.com/hapijs/vision/tree/v4.1.1
-            {
-                plugin: {
-                    register: 'vision',
-                    options: {}
-                },
+
+        // dependencies: []
+        {
+            plugin: {
+                register: './plugins/readings/readings.js',
                 options: {}
             },
+            options: {}
+        },
 
 
-            // https://github.com/dafortune/hapi-qs/tree/v1.1.3
-            {
-                plugin: {
-                    register: 'hapi-qs',
-                    options: {}
-                },
+        // dependencies: ['vision', 'inert']
+        {
+            plugin: {
+                register: './plugins/log/log.js',
                 options: {}
             },
-
-            // {
-            //     plugin: {
-            //         register: "./server/routes-websocket/routes-websocket.js",
-            //         options: {}
-            //     }
-
-            // },
-
-            // {   
-            //     plugin: {
-            //         register: "./server/routes-api/routes-api.js",
-            //         options: {}
-            //     },
-            // },
-
-            /*
-            // dependencies: ["inert"]
-            {
-                plugin: {
-                    register: './plugins/hapi-public/hapi-public.js',
-                    options: Config.get('plugins:hapi-public')
-                },
-                options: {}
-            },
+            options: {}
+        },
 
 
-            {
-                plugin: {
-                    register: './plugins/measurements/measurements.js',
-                    options: {}
-                },
-                options: {}
-            },
-
-
-            {
-                plugin: {
-                    register: './plugins/api-forecast/api-forecast.js',
-                    options: {}
-                },
-                options: {}
-            },
-*/
-            {
-                plugin: {
-                    register: './plugins/readings/readings.js',
-                    options: {}
-                },
-                options: {}
-            },
-            {
-                plugin: {
-                    register: './plugins/log/log.js',
-                    options: {}
-                },
-                options: {}
-            },
-/*
-            {
-                plugin: {
-                    register: './plugins/api-measurements-agg/api-measurements-agg.js',
-                    options: {}
-                },
-                options: {}
-            },
-
-            {
-                plugin: {
-                    register: './plugins/api-sync/api-sync.js',
-                    options: {}
-                },
-                options: {}
-            },
-
-            {
-                plugin: {
-                    register: './plugins/api-commands/api-commands.js',
-                    options: {}
-                },
-                options: {}
-            },
-
-            {
-                plugin: {
-                    register: './plugins/dashboard/dashboard.js',
-                    options: {}
-                },
-                options: {}
-            }
-            */
     ]
 
 

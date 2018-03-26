@@ -1,5 +1,3 @@
-
-
 'use strict';
 
 let Path = require('path');
@@ -7,6 +5,7 @@ let Webpack = require('webpack');
 let ExtractTextPlugin = require('extract-text-webpack-plugin');
 let BellOnBundlerErrorPlugin = require('bell-on-bundler-error-plugin');
 let CleanWebpackPlugin = require('clean-webpack-plugin')
+
 
 let internals = {};
 
@@ -126,8 +125,6 @@ function getConfig(isProduction) {
     };
 
     return config
-
-
 };
 
 module.exports = function (env = {}) {
