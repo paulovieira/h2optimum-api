@@ -78,7 +78,7 @@ exports.register = function (server, options, next){
                     // TODO: change response body if request was not authenticatd
                     //return reply({ newRecords: result.length, ts: new Date().toISOString() });
 
-                    let remoteAction = 'none';
+                    let remoteAction = '1';
                     let responsePayload = `newRecords: ${ result.length }; remoteAction: ${ remoteAction }`;
 
                     return reply(responsePayload)
