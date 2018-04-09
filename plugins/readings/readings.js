@@ -55,7 +55,7 @@ internals.insertMeasurementsHandler = function (request, reply) {
             // TODO: change response body if request was not authenticatd
             //return reply({ newRecords: result.length, ts: new Date().toISOString() });
 
-            let remoteAction = 'none';
+            let remoteAction = '1';
             let responsePayload = `newRecords: ${ result.length }; remoteAction: ${ remoteAction }`;
 
             return reply(responsePayload)
@@ -88,7 +88,6 @@ exports.register = function (server, options, next){
                     stripUnknown: true
                 }
             }
-
         },
 
         handler: internals.insertMeasurementsHandler
@@ -110,7 +109,6 @@ exports.register = function (server, options, next){
                     stripUnknown: true
                 }
             }
-
         },
 
         handler: internals.insertMeasurementsHandler
@@ -121,7 +119,6 @@ exports.register = function (server, options, next){
         path: '/v1/get-measurements',
         method: 'GET',
         config: {
-
             validate: {
 
                 query: {
