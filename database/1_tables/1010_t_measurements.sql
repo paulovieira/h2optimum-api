@@ -13,9 +13,9 @@ END IF;
 
 create table t_measurements(
     ts timestamptz not null default now(),
-	device_id macaddr not null,
-    sid smallint,
-    type text not null,
+	device_id macaddr not null,  -- TODO: change to device_mac, because in other tables we have device_id as int
+    sid smallint, 
+    type text not null,  -- TODO: change to smallint
     val real not null,
     description text,
     version smallint

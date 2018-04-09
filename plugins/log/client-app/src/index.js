@@ -8,7 +8,7 @@ let JsonMarkup = require('json-markup');
 
 let internals = {
 	format: 'raw',
-	period: 12,
+	period: 24,
 	response: []
 
 }
@@ -41,7 +41,7 @@ function fetchData() {
 	let showLoading = true;
 	updateDisplay(showLoading);
 
-	Q.all([Q.delay(750), getReadings()]).then(responses =>{ 
+	Q.all([Q.delay(750), getMeasurements()]).then(responses =>{ 
 
 		internals.response = responses[1];
 		for (let i = 0; i < internals.response.length; i++) {
@@ -55,12 +55,14 @@ function fetchData() {
 	})
 }
 
-function getReadings() {
+function getMeasurements() {
 
 	return Q($.ajax({
 		type: 'GET',
-		url: '/v1/get-readings',
+		url: '/v1/get-measurements',
 		data: {
+			// special mac address to by pass the where 'device_mac = ...'
+			deviceMac: '12:34:56:ab:cd:ef',  
 			period: internals.period
 		},
 	}))
