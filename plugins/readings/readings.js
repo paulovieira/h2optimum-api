@@ -48,20 +48,45 @@ internals.insertMeasurementsHandler = function (request, reply) {
         // the remaining keys in the query string match the names of the columns
     });
 
-
+    let result1
     Db.query(`select * from insert_measurements(' ${ JSON.stringify(request.query.data) } ');`)
         .then(function (result){
 
-            // TODO: change response body if request was not authenticatd
-            //return reply({ newRecords: result.length, ts: new Date().toISOString() });
+            result1 = result;
+
+            // temporary code to obtain the remote action
+            let query2 = { 
+                "userId": 1,
+                "installationId": 1
+            };
+
+            return Db.query(`select * from read_devices('${ JSON.stringify(query2) }');`)
+
+
+        })
+        .then((result2) => {
+
+            // TBD: fetch the device with the given mac and output the current battery mode
 
             let remoteAction = '1';
-            let responsePayload = `newRecords: ${ result.length }; remoteAction: ${ remoteAction }`;
+            if (result2.length > 0) {
+                result2.sort((rec1, rec2) => rec1.id - rec2.id)
+                let batteryModes = {
+                    "battery_normal": "0",
+                    "battery_eco": "1",
+                    "battery_standby": "2"
+                }
+
+                // Temporary - read the battery mode from the first device
+                remoteAction = batteryModes[result2[0]['battery_mode_code']];
+            }
+            
+            let responsePayload = `newRecords: ${ result1.length }; remoteAction: ${ remoteAction }`;
 
             return reply(responsePayload)
                     .type('text/plain')
-                    .header('x-new-records', result.length)
-                    .header('x-remote-action', remoteAction);
+                    .header('x-new-records', result1.length)
+                    .header('x-remote-action', remoteAction);            
         })
         .catch(function (err){
 
