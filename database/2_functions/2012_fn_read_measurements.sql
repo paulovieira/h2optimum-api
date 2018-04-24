@@ -40,6 +40,8 @@ end if;
 
 -- the main query starts here
 
+-- TODO: don't use a dynamic query
+
 if _period is not null then
 
 	query := $$

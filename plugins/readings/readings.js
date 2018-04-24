@@ -1,15 +1,16 @@
 'use strict';
 
-const Path = require('path');
-const Config = require('nconf');
-const Joi = require('joi');
-const _ = require('underscore')
-const Hoek = require('hoek')
+let Path = require('path');
+let Config = require('nconf');
+let Joi = require('joi');
+let _ = require('underscore')
+let Hoek = require('hoek')
+let Boom = require('boom')
 
-const Utils = require('../../common/utils');
-const Db = require('../../database');
+let Utils = require('../../common/utils');
+let Db = require('../../database');
 
-const internals = {};
+let internals = {};
 
 internals.measurementSchema = Joi.object({
     sid: Joi.number().integer(),
@@ -19,6 +20,11 @@ internals.measurementSchema = Joi.object({
     desc: Joi.string().allow([''])
 });
 
+internals.batteryModes = {
+    battery_normal: "0",
+    battery_eco: "1",
+    battery_standby: "2"
+};
 
 internals.insertMeasurementsHandler = function (request, reply) {
 
@@ -55,30 +61,27 @@ internals.insertMeasurementsHandler = function (request, reply) {
             result1 = result;
 
             // temporary code to obtain the remote action
+            // TODO: we should be sending also the activation key
             let query2 = { 
-                "userId": 1,
-                "installationId": 1
+                mac: mac,
             };
 
-            return Db.query(`select * from read_devices('${ JSON.stringify(query2) }');`)
-
-
+            return Db.query(`select * from read_devices_by_mac('${ JSON.stringify(query2) }');`)
         })
         .then((result2) => {
 
             // TBD: fetch the device with the given mac and output the current battery mode
 
-            let remoteAction = '1';
-            if (result2.length > 0) {
-                result2.sort((rec1, rec2) => rec1.id - rec2.id)
-                let batteryModes = {
-                    "battery_normal": "0",
-                    "battery_eco": "1",
-                    "battery_standby": "2"
-                }
+            console.log(result2)
 
-                // Temporary - read the battery mode from the first device
-                remoteAction = batteryModes[result2[0]['battery_mode_code']];
+            // default battery mode
+            let remoteAction = '0';
+
+            if (result2.length > 0) {
+
+                // if there is more the 1 device in the table, use the last one
+                let device = result2[result2.length - 1];
+                remoteAction = internals.batteryModes[device['battery_mode_code']];
             }
             
             let responsePayload = `newRecords: ${ result1.length }; remoteAction: ${ remoteAction }`;
@@ -90,8 +93,20 @@ internals.insertMeasurementsHandler = function (request, reply) {
         })
         .catch(function (err){
 
+            let outputErr = err;
+
+            // check all errors from pg constraints
+            if (false) {}
+
+            // check for PL/pgSQL error "invalid_text_representation"; 
+            // this will happen when the we try to insert a mac address that is now well formed
+            else if (err.code === '22P02' && err.message.indexOf('macaddr') >= 0){
+                outputErr = Boom.badRequest('mac_invalid_text_representation');
+            }
+
+            // log the original error, but reply with the outputErr
             Utils.logErr(err, ['api-measurements']);
-            return reply(err);
+            return reply(outputErr);
         });
 };
 
@@ -177,8 +192,20 @@ exports.register = function (server, options, next){
                 })
                 .catch(function (err){
 
+                    let outputErr = err;
+
+                    // check all errors from pg constraints
+                    if (false) {}
+
+                    // check for PL/pgSQL error "invalid_text_representation"; 
+                    // this will happen when the we try to insert a mac address that is now well formed
+                    else if (err.code === '22P02' && err.message.indexOf('macaddr') >= 0){
+                        outputErr = Boom.badRequest('mac_invalid_text_representation');
+                    }
+
+                    // log the original error, but reply with the outputErr
                     Utils.logErr(err, ['api-measurements']);
-                    return reply(err);
+                    return reply(outputErr);
                 });
         }
     });
