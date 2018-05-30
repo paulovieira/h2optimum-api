@@ -190,6 +190,22 @@ exports.register = function (server, options, next){
             let dbOptions = request.query;
             console.log(dbOptions);
 
+            let YYYY = dbOptions.fromDate.getFullYear();
+            let MM = dbOptions.fromDate.getMonth();
+            let DD = dbOptions.fromDate.getDate();
+            let dateTemp = new Date(YYYY, MM, DD);
+            dbOptions.fromDate = dateTemp.toISOString();
+
+            YYYY = dbOptions.toDate.getFullYear();
+            MM = dbOptions.toDate.getMonth();
+            DD = dbOptions.toDate.getDate();
+            dateTemp = new Date(YYYY, MM, DD);
+            dbOptions.toDate = dateTemp.toISOString();
+
+
+            console.log('stringify:\n: ', JSON.stringify(dbOptions))
+
+
             Db.query(`select * from read_measurements(' ${ JSON.stringify(dbOptions) } ');`)
                 .then(function (result){
 
