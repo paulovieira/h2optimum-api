@@ -176,10 +176,11 @@ exports.register = function (server, options, next){
 
             cors: {
                 origin: [
-                    'http://localhost:8001',
-                    'http://localhost:8002',
-                    'http://app.2adapt.pt',
-                    'https://app.2adapt.pt'
+                    '*',
+                    // 'http://localhost:8001',
+                    // 'http://localhost:8002',
+                    // 'http://app.2adapt.pt',
+                    // 'https://app.2adapt.pt'
                 ]
             }
 
