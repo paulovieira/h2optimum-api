@@ -36,7 +36,7 @@ exports.register = function(server, options, next){
     //   'npm run build', or if the cwd is the base directory,
     //   'npm run build --prefix ./plugins/log/'
     if (Config.get('env') === 'production'){
-        internals.buildProduction();
+        // internals.buildProduction();
     }
 
     internals.addNunjucksFilters(env);
