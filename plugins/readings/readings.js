@@ -89,7 +89,9 @@ internals.insertMeasurementsHandler = function (request, reply) {
                     set last_reading = now()
                     where id = ${device.id}
                 `)
-                // TODO: update t_devices set last_reading = now() where id = ...
+                .then(() => { console.log('last reading was updated') })
+                .catch((err) => { console.log(err) })
+
             }
             
             let responsePayload = `newRecords: ${ result1.length }; remoteAction: ${ remoteAction }`;
