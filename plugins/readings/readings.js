@@ -82,6 +82,14 @@ internals.insertMeasurementsHandler = function (request, reply) {
                 // if there is more the 1 device in the table, use the last one
                 let device = result2[result2.length - 1];
                 remoteAction = internals.batteryModes[device['battery_mode_code']];
+
+
+                Db.query(`
+                    update t_devices
+                    set last_reading = now()
+                    where id = ${device.id}
+                `)
+                // TODO: update t_devices set last_reading = now() where id = ...
             }
             
             let responsePayload = `newRecords: ${ result1.length }; remoteAction: ${ remoteAction }`;

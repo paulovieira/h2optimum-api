@@ -21,6 +21,9 @@ create table t_measurements(
     version smallint
 );
 
+alter table t_measurements
+add column installation_id int references t_installations(id) default null;
+
 
 -- timescale hypertable; we are not using space partioning at the moment; see
 -- http://docs.timescale.com/v0.9/api#create_hypertable-best-practices
