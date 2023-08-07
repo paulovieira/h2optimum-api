@@ -54,8 +54,50 @@ internals.insertMeasurementsHandler = function (request, reply) {
         // the remaining keys in the query string match the names of the columns
     });
 
-    let result1
-    Db.query(`select * from insert_measurements(' ${ JSON.stringify(request.query.data) } ');`)
+    // let result1;
+    let device; 
+    Db.query(`select * from read_devices_by_mac('${ JSON.stringify({ mac: mac }) }');`)
+        .then(function(result) {
+
+            if (result.length === 0) {
+                throw new Error('device not found: ' + mac)
+            }
+
+
+            // if there is more the 1 device in the table, use the last one
+            device = result[result.length - 1];
+
+            request.query.data.forEach((obj) => {
+                obj.installation_id = device.installation_id;
+            });
+
+            return Db.query(`select * from insert_measurements(' ${ JSON.stringify(request.query.data) } ');`);            
+
+        })
+        .then(function(result2){
+
+            let remoteAction = internals.batteryModes[device['battery_mode_code']] || '0';
+
+            Db.query(`
+                update t_devices
+                set last_reading = now()
+                where id = ${device.id}
+            `)
+            .then(() => { console.log('last reading was updated') })
+            .catch((err) => { console.log(err) })
+            
+            let responsePayload = `newRecords: ${ result2.length }; remoteAction: ${ remoteAction }`;
+
+            return reply(responsePayload)
+                    .type('text/plain')
+                    .header('x-new-records', result2.length)
+                    .header('x-remote-action', remoteAction); 
+
+        })
+
+
+        /*
+    // Db.query(`select * from insert_measurements(' ${ JSON.stringify(request.query.data) } ');`)
         .then(function (result){
 
             result1 = result;
@@ -101,6 +143,7 @@ internals.insertMeasurementsHandler = function (request, reply) {
                     .header('x-new-records', result1.length)
                     .header('x-remote-action', remoteAction);            
         })
+        */
         .catch(function (err){
 
             let outputErr = err;

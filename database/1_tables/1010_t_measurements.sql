@@ -22,7 +22,7 @@ create table t_measurements(
 );
 
 alter table t_measurements
-add column installation_id int references t_installations(id) default null;
+add column installation_id int references t_installations(id) default null on delete cascade;
 
 
 -- timescale hypertable; we are not using space partioning at the moment; see
